@@ -122,9 +122,47 @@ let PostShow = {
             let index = data.findIndex(x=> x.id === request.id);
             data[index] = post;
             alert(`Post updated`)
-            location.href = '#/'
+            location.href = '#/posts'
         })
     }
+}
+
+let View = {
+
+    render : async () => {
+        let request = Utils.parseRequestURL()
+        let post = await getPost(request.id)
+
+        return /*html*/`
+            <section class="section">
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input class="input" id="title_input" type="text" placeholder="Enter the Title" value="${post.title}">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-passport"></i>
+                        </span>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input class="input" id="content_input" type="text" placeholder="Enter the Content" value="${post.content}">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-pen-nib"></i>
+                        </span>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input class="input" id="author_input" type="text" placeholder="Enter the Author" value="${post.name}">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </p>
+                </div>
+            </section>
+        `
+    }
+    , after_render: async () => { }
 }
 
 //import Register     from './views/pages/Register.js'
@@ -236,7 +274,7 @@ let Home = {
                <h1> Home </h1>
                <ul>
                    ${ posts.map(post => 
-                       /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
+                       /*html*/`<li><a href="#/view/${post.id}">${post.title}</a></li>`
                        ).join('\n ')
                    }
                </ul>
@@ -378,6 +416,7 @@ const routes = {
     , '/login'      : Login
     , '/register'   : Register
     , '/posts'      : PostsList
+    , '/view/:id'       : View
 };
 
 
